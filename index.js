@@ -1,13 +1,38 @@
-import express from "express"
-const app = express()
-app.listen(8080, () => {
-    console.log("Server Started. Welcome Gagan!");
-}); 
+// index.js
+import express from "express";
+import cors from "cors"; 
 
-app.get("/", (req, res) => {
-    return res.send("Hello World");
+const app = express();
+app.use(cors()); // CORS middleware
+
+app.listen(8080, () => {
+  console.log("Server Started. Welcome Gagan!");
 });
 
-app.get("/greet",(req,res) => {res.send("Welcome to the website")} )
-app.get("/name", (req,res) => {res.send("Welcome to the browser, Marella Gagan Hari Kiran")} )
-app.get("/weather", (req,res) => {res.send("Current Weather: 41 Degrees Celsius")} )
+app.get("/", (req, res) => {
+  return res.send("Hello World");
+});
+
+app.get("/greet", (req, res) => {
+  res.send("Welcome to the website");
+});
+
+app.get("/name", (req, res) => {
+  res.send("Welcome to the browser, Marella Gagan Hari Kiran");
+});
+
+app.get("/weather", (req, res) => {
+  res.json({ temperature: "41°C" }); 
+});
+
+app.get("/products", (req, res) => {
+  const products = [
+    { name: "Apple", price: 20, qty: 50 },
+    { name: "Mango", price: 25, qty: 40 },
+    { name: "Orange", price: 15, qty: 60 },
+    { name: "Blueberry", price: 35, qty: 30 },
+    { name: "Strawberry", price: 30, qty: 45 },
+  ];
+  res.json(products);
+});
+
