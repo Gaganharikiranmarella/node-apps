@@ -10,4 +10,4 @@ app.get("/", (req, res) => {
 
 app.get("/greet",(req,res) => {res.send("Welcome to the website")} )
 app.get("/name", (req,res) => {res.send("Welcome to the browser, Marella Gagan Hari Kiran")} )
-app.get("/name", (req,res) => {res.send("Current Weather: 41 Degrees Celsius")} )
+app.get("/weather", (req,res) => {res.send("Current Weather: 41 Degrees Celsius")} )
