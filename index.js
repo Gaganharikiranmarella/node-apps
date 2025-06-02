@@ -32,6 +32,7 @@ app.get("/products", (req, res) => {
     { name: "Orange", price: 15, qty: 60 },
     { name: "Blueberry", price: 35, qty: 30 },
     { name: "Strawberry", price: 30, qty: 45 },
+    { name: "Pineapple", price: 50, qty: 45},
   ];
   res.json(products);
 });
