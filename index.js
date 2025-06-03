@@ -4,6 +4,7 @@ import mongoose from "mongoose";
 
 const app = express();
 app.use(cors()); // CORS middleware
+app.use(express.json())
 
 // Connect to MongoDB once before starting the server
 mongoose.connect("mongodb://localhost:27017/gcet")
