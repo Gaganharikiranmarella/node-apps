@@ -9,6 +9,8 @@ app.use(cors()); // CORS middleware
 mongoose.connect("mongodb://localhost:27017/gcet")
   .then(() => {
     console.log("MongoDB connected");
+
+    // Start server only after successful DB connection
     app.listen(8080, () => {
       console.log("Server Started. Welcome Gagan!");
     });
@@ -17,12 +19,14 @@ mongoose.connect("mongodb://localhost:27017/gcet")
     console.error("MongoDB connection error:", err);
   });
 
-const userSchema = new mongoose.Schema({   // fixed typo from userScheme to userSchema
+// Define schema and model
+const userSchema = new mongoose.Schema({   // fixed typo userScheme => userSchema
   name: { type: String },
 });
 
 const User = mongoose.model("User", userSchema); // Capitalized model name by convention
 
+// Routes
 app.get("/", (req, res) => {
   return res.send("Hello World");
 });
@@ -51,10 +55,10 @@ app.get("/products", (req, res) => {
   res.json(products);
 });
 
-// Fix for register route:
+// Fixed register route for inserting multiple users
 app.get("/register", async (req, res) => {
   try {
-    // Insert multiple documents as array
+    // Insert multiple documents as an array
     const result = await User.insertMany([{ name: "Sarah" }, { name: "Gagan" }]);
     res.json(result);
   } catch (error) {
