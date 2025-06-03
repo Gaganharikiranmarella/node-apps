@@ -1,21 +1,28 @@
-// productRoutes.js
 import express from "express";
+import Product from "../models/productModel.js";
 
 const router = express.Router();
 
-// Static product list
-const products = [
-  { name: "Apple", price: 20, qty: 50 },
-  { name: "Mango", price: 25, qty: 40 },
-  { name: "Orange", price: 15, qty: 60 },
-  { name: "Blueberry", price: 35, qty: 30 },
-  { name: "Strawberry", price: 30, qty: 45 },
-  { name: "Pineapple", price: 50, qty: 45 },
-];
+// GET /api/products
+router.get("/", async (req, res) => {
+  try {
+    const products = await Product.find();
+    res.json(products);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
 
-// GET all products
-router.get("/", (req, res) => {
-  res.json(products);
+// POST /api/products (optional - if you want to add products)
+router.post("/", async (req, res) => {
+  try {
+    const { name, price, qty } = req.body;
+    const product = new Product({ name, price, qty });
+    await product.save();
+    res.status(201).json(product);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 });
 
 export default router;
