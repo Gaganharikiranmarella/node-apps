@@ -1,11 +1,13 @@
 // index.js
 import express from "express";
 import cors from "cors"; 
+import mongoose from "mongoose";
 
 const app = express();
 app.use(cors()); // CORS middleware
 
 app.listen(8080, () => {
+  mongoose.connect("mongodb://localhost:27017/gcet");
   console.log("Server Started. Welcome Gagan!");
 });
 
