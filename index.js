@@ -1,35 +1,39 @@
 import express from "express";
-import cors from "cors"; 
+import cors from "cors";
 import mongoose from "mongoose";
 
 const app = express();
-app.use(cors()); // CORS middleware
-app.use(express.json())
+app.use(cors());
+app.use(express.json()); // To parse JSON bodies
 
-// Connect to MongoDB once before starting the server
+// Connect to MongoDB before starting server
 mongoose.connect("mongodb://localhost:27017/gcet")
   .then(() => {
-    console.log("MongoDB connected");
+    console.log("✅ MongoDB connected");
 
-    // Start server only after successful DB connection
+    // Start server
     app.listen(8080, () => {
-      console.log("Server Started. Welcome Gagan!");
+      console.log("🚀 Server Started on http://localhost:8080");
     });
   })
   .catch(err => {
-    console.error("MongoDB connection error:", err);
+    console.error("❌ MongoDB connection error:", err);
   });
 
-// Define schema and model
-const userSchema = new mongoose.Schema({   // fixed typo userScheme => userSchema
-  name: { type: String },
+// Schema and model
+const userSchema = new mongoose.Schema({
+  name: { type: String, required: true },
+  username: { type: String, required: true },
+  email: { type: String, required: true },
+  pass: {type: String, required: true}
 });
 
-const User = mongoose.model("User", userSchema); // Capitalized model name by convention
 
-// Routes
+const User = mongoose.model("User", userSchema);
+
+// Basic routes
 app.get("/", (req, res) => {
-  return res.send("Hello World");
+  res.send("Hello World");
 });
 
 app.get("/greet", (req, res) => {
@@ -41,7 +45,7 @@ app.get("/name", (req, res) => {
 });
 
 app.get("/weather", (req, res) => {
-  res.json({ temperature: "41°C" }); 
+  res.json({ temperature: "41°C" });
 });
 
 app.get("/products", (req, res) => {
@@ -56,13 +60,19 @@ app.get("/products", (req, res) => {
   res.json(products);
 });
 
-// Fixed register route for inserting multiple users
-app.get("/register", async (req, res) => {
+// POST /register to insert users
+app.post("/register", async (req, res) => {
   try {
-    // Insert multiple documents as an array
-    const result = await User.insertMany([{ name: "Sarah" }, { name: "Gagan" }]);
-    res.json(result);
+    const { users } = req.body;
+
+    if (!Array.isArray(users)) {
+      return res.status(400).json({ error: "Expected 'users' array in request body." });
+    }
+
+    const result = await User.insertMany(users);
+    res.status(201).json(result);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 });
+
