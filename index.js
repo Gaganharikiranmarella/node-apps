@@ -22,8 +22,8 @@ mongoose.connect("mongodb://localhost:27017/gcet")
 
 // Schema and model
 const userSchema = new mongoose.Schema({
-  name: { type: String, required: true },
-  username: { type: String, required: true },
+  name: { type: String, required: false },
+  username: { type: String, required: false },
   email: { type: String, required: true },
   pass: {type: String, required: true}
 });
@@ -71,6 +71,35 @@ app.post("/register", async (req, res) => {
 
     const result = await User.insertMany(users);
     res.status(201).json(result);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+app.post("/login", async (req, res) => {
+  try {
+    const { email, pass } = req.body;
+
+    if (!email || !pass) {
+      return res.status(400).json({ message: "Email and pass required" });
+    }
+
+    const existingUser = await User.findOne({ email });
+
+    if (existingUser) {
+      return res.status(200).json({ message: "Account already exists" });
+    }
+
+    const newUser = new User({
+      name: "",
+      username: "",
+      email,
+      pass // storing pass directly (no hashing)
+    });
+
+    await newUser.save();
+    res.status(201).json({ message: "Account created" });
+
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
