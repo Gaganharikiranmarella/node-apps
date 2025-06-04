@@ -5,12 +5,15 @@ import mongoose from "mongoose";
 import userRoutes from "./routes/userRoutes.js";
 import productRoutes from "./routes/productRoutes.js";
 import orderRoutes from "./routes/orderRoutes.js";
+import dotenv from "dotenv";
+dotenv.config();
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 
-mongoose.connect("mongodb://localhost:27017/gcet")
+mongoose.connect(`${MONGODB_URI}`)
+
   .then(() => {
     console.log("MongoDB connected");
     app.listen(8080, () => {
@@ -36,6 +39,8 @@ app.get("/name", (req, res) => {
 app.get("/weather", (req, res) => {
   res.json({ temperature: "41°C" });
 });
+
+const MONGODB_URI = process.env.MONGODB_URI
 
 app.use("/users", userRoutes);
 app.use("/products", productRoutes);
