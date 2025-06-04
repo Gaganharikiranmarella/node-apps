@@ -1,6 +1,6 @@
 import express from "express";
-import registerHandler from "../register.js";
-import loginHandler from "../login.js";
+import registerHandler from "../controllers/register.js";
+import loginHandler from "../controllers/login.js";
 
 const router = express.Router();
 
