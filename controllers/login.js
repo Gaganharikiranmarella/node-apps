@@ -14,7 +14,7 @@ export default async function login(req, res) {
       return res.status(401).json({ error: "Invalid credentials." });
     }
 
-    if (user.password !== password) {
+    if (user.pass !== pass) {
       return res.status(401).json({ error: "Invalid credentials." });
     }
 
