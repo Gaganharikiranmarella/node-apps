@@ -4,7 +4,8 @@ export default async function register(req, res) {
   try {
     const { name, username, email, pass } = req.body;
 
-    if (!email || !password) {
+    // Check for email and pass (not password)
+    if (!email || !pass) {
       return res.status(400).json({ error: "Email and password required." });
     }
 
@@ -13,11 +14,13 @@ export default async function register(req, res) {
       return res.status(409).json({ error: "Account already exists." });
     }
 
-    const newUser = new User({ name, username, email, password });
+    // Create user using pass, not password
+    const newUser = new User({ name, username, email, pass });
     const saved = await newUser.save();
 
     res.status(201).json({ message: "Account created", user: saved });
   } catch (err) {
+    console.error("Register error:", err);
     res.status(500).json({ error: err.message });
   }
 }
