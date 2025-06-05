@@ -2,7 +2,7 @@ import User from "../models/userModel.js";
 
 export default async function register(req, res) {
   try {
-    const { name, username, email, password } = req.body;
+    const { name, username, email, pass } = req.body;
 
     if (!email || !password) {
       return res.status(400).json({ error: "Email and password required." });
@@ -13,7 +13,7 @@ export default async function register(req, res) {
       return res.status(409).json({ error: "Account already exists." });
     }
 
-    const newUser = new User({ name, username, email, password });
+    const newUser = new User({ name, username, email, pass });
     const saved = await newUser.save();
 
     res.status(201).json({ message: "Account created", user: saved });
