@@ -35,7 +35,7 @@ app.get("/greet", (req, res) => {
 });
 
 app.get("/name", (req, res) => {
-  res.send("Welcome to the browser, Marella Gagan Hari Kiran");
+  res.send("Made by:- Marella Gagan Hari Kiran");
 });
 
 app.get("/weather", (req, res) => {
