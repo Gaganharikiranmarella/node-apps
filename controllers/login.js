@@ -2,14 +2,19 @@ import User from "../models/userModel.js";
 
 export default async function login(req, res) {
   try {
-    const { email, password } = req.body;
+    const { email, pass } = req.body;
 
-    if (!email || !password) {
+    if (!email || !pass) {
       return res.status(400).json({ error: "Email and password required." });
     }
 
-    const user = await User.findOne({ email, password });
+    const user = await User.findOne({ email });
+
     if (!user) {
+      return res.status(401).json({ error: "Invalid credentials." });
+    }
+
+    if (user.password !== password) {
       return res.status(401).json({ error: "Invalid credentials." });
     }
 

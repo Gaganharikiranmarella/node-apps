@@ -13,7 +13,7 @@ export default async function register(req, res) {
       return res.status(409).json({ error: "Account already exists." });
     }
 
-    const newUser = new User({ name, username, email, pass });
+    const newUser = new User({ name, username, email, password });
     const saved = await newUser.save();
 
     res.status(201).json({ message: "Account created", user: saved });
